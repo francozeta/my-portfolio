@@ -3,8 +3,7 @@ import { getServerSession } from "next-auth/next"
 import { redirect } from "next/navigation"
 import { authOptions } from "../api/auth/[...nextauth]/route"
 import Link from "next/link"
-import { LogOut, Plus, FolderOpen } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Plus, FolderOpen } from "lucide-react"
 
 export default async function AdminLayout({
   children,
@@ -14,13 +13,9 @@ export default async function AdminLayout({
   try {
     const session = await getServerSession(authOptions)
 
-    // Si no hay sesión, redirigir al login
-    if (!session) {
-      return redirect("/admin/login")
-    }
 
     return (
-      <div className="min-h-screen bg-neutral-950 text-white">
+      <div className="min-h-screen bg-neutral-950 text-white ">
         <div className="flex h-screen">
           {/* Sidebar */}
           <div className="w-64 border-r border-neutral-800 p-4">
@@ -48,7 +43,7 @@ export default async function AdminLayout({
           </div>
 
           {/* Main content */}
-          <div className="flex-1 overflow-auto p-6">{children}</div>
+          <div className="flex-1 p-6 overflow-hidden">{children}</div>
         </div>
       </div>
     )
