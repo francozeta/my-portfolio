@@ -1,24 +1,12 @@
 "use client"
 
-import { useState, useEffect } from "react"
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
 export function Hero() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY })
-    }
-
-    window.addEventListener("mousemove", handleMouseMove)
-    return () => window.removeEventListener("mousemove", handleMouseMove)
-  }, [])
-
   const scrollToNextSection = () => {
     const nextSection = document.getElementById("about-section")
     if (nextSection) {
@@ -28,18 +16,18 @@ export function Hero() {
 
   return (
     <section className="relative w-full min-h-screen flex flex-col justify-center items-center px-4 border-b border-neutral-50/10">
-      {/* Gradient background - mejorado con degradado desde abajo */}
+      {/* Gradient background - estático y centrado */}
       <div
         className="absolute inset-0 opacity-20 pointer-events-none"
         style={{
           background: `
-            radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(200, 200, 200, 0.15), transparent 40%),
+            radial-gradient(circle at 50% 50%, rgba(200, 200, 200, 0.15), transparent 60%),
             radial-gradient(circle at 50% 100%, rgba(200, 200, 200, 0.1), transparent 70%)
           `,
         }}
       />
 
-      {/* Grid pattern - mantenido pero con color ajustado */}
+      {/* Grid pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,black_70%,transparent_100%)]" />
 
       <div className="container relative z-10 mx-auto max-w-3xl text-center">
@@ -112,7 +100,7 @@ export function Hero() {
               opacity: [0.5, 1, 0.5],
             }}
             transition={{
-              repeat: Number.POSITIVE_INFINITY,
+              repeat: Infinity,
               duration: 1.5,
               ease: "easeInOut",
             }}
@@ -122,4 +110,3 @@ export function Hero() {
     </section>
   )
 }
-

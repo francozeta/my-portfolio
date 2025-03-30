@@ -4,8 +4,33 @@ import { ProjectCard } from "@/components/project-card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { FaAws } from "react-icons/fa";
+import { SiDocker, SiFigma, SiGit, SiJavascript, SiLinux, SiNextdotjs, SiNodedotjs, SiPython, SiReact, SiTailwindcss, SiTypescript } from "react-icons/si";
 
 export default function Home() {
+  const skills = {
+    languages: [
+      { name: "JavaScript", icon: SiJavascript },
+      { name: "TypeScript", icon: SiTypescript },
+      { name: "React", icon: SiReact },
+      { name: "Next.js", icon: SiNextdotjs },
+      { name: "Node.js", icon: SiNodedotjs },
+      { name: "Python", icon: SiPython },
+    ],
+    design: [
+      { name: "Figma", icon: SiFigma },
+      { name: "Tailwind CSS", icon: SiTailwindcss },
+      { name: "UI/UX", icon: SiReact },
+      { name: "Responsive Design", icon: SiReact },
+      { name: "Git", icon: SiGit },
+    ],
+    devops: [
+      { name: "AWS", icon: FaAws },
+      { name: "Docker", icon: SiDocker },
+      { name: "CI/CD", icon: SiGit },
+      { name: "Linux", icon: SiLinux },
+    ],
+  }
   return (
     <div className="min-h-screen">
       <Hero />
@@ -45,28 +70,30 @@ export default function Home() {
               <div className="space-y-4">
                 <div>
                   <h4 className="text-sm font-medium mb-2">Languages & Frameworks</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {["JavaScript", "TypeScript", "React", "Next.js", "Node.js", "Python"].map((skill) => (
-                      <span
-                        key={skill}
-                        className="px-3 py-1 bg-neutral-900/50 border border-neutral-700 rounded-full text-xs"
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {skills.languages.map((skill) => (
+                      <div
+                        key={skill.name}
+                        className="flex items-center gap-2 px-3 py-[5px] bg-neutral-900/50 border border-neutral-700 rounded-full"
                       >
-                        {skill}
-                      </span>
+                        <skill.icon className="w-4 h-4 text-neutral-400" />
+                        <span className="text-xs">{skill.name}</span>
+                      </div>
                     ))}
                   </div>
                 </div>
 
                 <div>
                   <h4 className="text-sm font-medium mb-2">Design & Tools</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {["Figma", "Tailwind CSS", "UI/UX", "Responsive Design", "Git"].map((skill) => (
-                      <span
-                        key={skill}
-                        className="px-3 py-1 bg-neutral-900/50 border border-neutral-700 rounded-full text-xs"
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {skills.design.map((skill) => (
+                      <div
+                        key={skill.name}
+                        className="flex items-center gap-2 px-3 py-[5px] bg-neutral-900/50 border border-neutral-700 rounded-full"
                       >
-                        {skill}
-                      </span>
+                        <skill.icon className="w-4 h-4 text-neutral-400" />
+                        <span className="text-xs">{skill.name}</span>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -90,7 +117,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-24 px-4 bg-gradient-to-b from-black to-neutral-950">
+      <section className="py-24 px-4 bg-gradient-to-b">
         <div className="container mx-auto max-w-5xl">
           <div className="flex flex-col md:flex-row justify-between items-baseline mb-12">
             <h2 className="text-3xl font-bold">Featured Work</h2>
@@ -122,7 +149,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-  
+
     </div>
   );
 }

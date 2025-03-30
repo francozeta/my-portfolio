@@ -4,6 +4,25 @@ import { motion } from "framer-motion"
 import Image from "next/image"
 import { Github, Linkedin, Mail, Twitter } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import {
+  SiJavascript,
+  SiTypescript,
+  SiReact,
+  SiNextdotjs,
+  SiNodedotjs,
+  SiPython,
+  SiDocker,
+  SiKubernetes,
+  SiGraphql,
+  SiMongodb,
+  SiPostgresql,
+  SiRedis,
+  SiFigma,
+  SiAdobexd,
+  SiTailwindcss,
+  SiSass,
+} from "react-icons/si"
+import { FaAws } from 'react-icons/fa'
 
 export default function AboutPage() {
   // Datos de perfil (en un proyecto real, estos datos podrían venir de una API o CMS)
@@ -52,22 +71,26 @@ export default function AboutPage() {
     ],
     skills: {
       technical: [
-        "JavaScript",
-        "TypeScript",
-        "React",
-        "Next.js",
-        "Node.js",
-        "Python",
-        "AWS",
-        "Docker",
-        "Kubernetes",
-        "GraphQL",
-        "REST API",
-        "MongoDB",
-        "PostgreSQL",
-        "Redis",
+        { name: "JavaScript", icon: SiJavascript },
+        { name: "TypeScript", icon: SiTypescript },
+        { name: "React", icon: SiReact },
+        { name: "Next.js", icon: SiNextdotjs },
+        { name: "Node.js", icon: SiNodedotjs },
+        { name: "Python", icon: SiPython },
+        { name: "AWS", icon: FaAws },
+        { name: "Docker", icon: SiDocker },
+        { name: "Kubernetes", icon: SiKubernetes },
+        { name: "GraphQL", icon: SiGraphql },
+        { name: "MongoDB", icon: SiMongodb },
+        { name: "PostgreSQL", icon: SiPostgresql },
+        { name: "Redis", icon: SiRedis },
       ],
-      design: ["UI/UX Design", "Figma", "Adobe XD", "Responsive Design", "Design Systems", "Tailwind CSS", "SASS/SCSS"],
+      design: [
+        { name: "UI/UX Design", icon: SiAdobexd },
+        { name: "Figma", icon: SiFigma },
+        { name: "Tailwind CSS", icon: SiTailwindcss },
+        { name: "SASS/SCSS", icon: SiSass },
+      ],
       soft: [
         "Problem Solving",
         "Team Leadership",
@@ -107,13 +130,22 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen pt-24 pb-16 px-4">
-      {/* Background elements */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,black_70%,transparent_100%)] pointer-events-none" />
 
-      <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-black to-transparent pointer-events-none" />
-      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black to-transparent pointer-events-none" />
+      {/* Gradient background - estático y centrado */}
+      <div
+        className="absolute inset-0 opacity-20 pointer-events-none"
+        style={{
+          background: `
+            radial-gradient(circle at 50% 50%, rgba(200, 200, 200, 0.15), transparent 60%),
+            radial-gradient(circle at 50% 100%, rgba(200, 200, 200, 0.1), transparent 70%)
+          `,
+        }}
+      />
 
-      <div className="container mx-auto max-w-4xl relative z-10">
+      {/* Grid pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,black_70%,transparent_100%)]" />
+
+      <div className="container mx-auto max-w-5xl relative z-10">
         <motion.div
           className="flex flex-col items-center mb-16 text-center"
           initial={{ opacity: 0, y: 20 }}
@@ -147,14 +179,14 @@ export default function AboutPage() {
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
           <motion.div variants={container} initial="hidden" animate="show">
-            <motion.h2 variants={item} className="text-2xl font-bold mb-6 border-b border-neutral-800 pb-2">
+            <motion.h2 variants={item} className="text-3xl font-bold mb-6">
               About Me
             </motion.h2>
-            <div className="space-y-4">
+            <div className="space-y-4 text-gray-400">
               {profile.bio.map((paragraph, index) => (
-                <motion.p key={index} variants={item} className="text-gray-300">
+                <motion.p key={index} variants={item}>
                   {paragraph}
                 </motion.p>
               ))}
@@ -193,53 +225,57 @@ export default function AboutPage() {
           </motion.div>
 
           <motion.div variants={container} initial="hidden" animate="show">
-            <motion.h2 variants={item} className="text-2xl font-bold mb-6 border-b border-neutral-800 pb-2">
+            <motion.h3 variants={item} className="text-xl font-medium mb-6">
               Skills & Expertise
-            </motion.h2>
+            </motion.h3>
 
-            <motion.div variants={item} className="mb-8">
-              <h3 className="text-lg font-semibold mb-3">Technical Skills</h3>
-              <div className="flex flex-wrap gap-2">
-                {profile.skills.technical.map((skill, index) => (
-                  <span
-                    key={index}
-                    className="px-3 py-1 bg-neutral-900/50 border border-neutral-700 rounded-full text-xs"
-                  >
-                    {skill}
-                  </span>
-                ))}
+            <motion.div variants={item} className="space-y-6">
+              <div>
+                <h4 className="text-sm font-medium mb-4">Technical Skills</h4>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {profile.skills.technical.map((skill, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-2 px-3 py-[5px] bg-neutral-900/50 border border-neutral-700 rounded-full"
+                    >
+                      <skill.icon className="w-5 h-5 text-neutral-400" />
+                      <span className="text-xs">{skill.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h4 className="text-sm font-medium mb-4">Design Skills</h4>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {profile.skills.design.map((skill, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-2 px-3 py-[5px] bg-neutral-900/50 border border-neutral-700 rounded-full"
+                    >
+                      <skill.icon className="w-5 h-5 text-neutral-400" />
+                      <span className="text-xs">{skill.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h4 className="text-sm font-medium mb-4">Soft Skills</h4>
+                <div className="flex flex-wrap gap-2">
+                  {profile.skills.soft.map((skill, index) => (
+                    <span
+                      key={index}
+                      className="px-3 py-1 bg-neutral-900/50 border border-neutral-700 rounded-full text-xs"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
               </div>
             </motion.div>
 
-            <motion.div variants={item} className="mb-8">
-              <h3 className="text-lg font-semibold mb-3">Design Skills</h3>
-              <div className="flex flex-wrap gap-2">
-                {profile.skills.design.map((skill, index) => (
-                  <span
-                    key={index}
-                    className="px-3 py-1 bg-neutral-900/50 border border-neutral-700 rounded-full text-xs"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div variants={item} className="mb-8">
-              <h3 className="text-lg font-semibold mb-3">Soft Skills</h3>
-              <div className="flex flex-wrap gap-2">
-                {profile.skills.soft.map((skill, index) => (
-                  <span
-                    key={index}
-                    className="px-3 py-1 bg-neutral-900/50 border border-neutral-700 rounded-full text-xs"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div variants={item}>
+            <motion.div variants={item} className="mt-8">
               <h3 className="text-lg font-semibold mb-3">Languages</h3>
               <div className="space-y-2">
                 {profile.languages.map((lang, index) => (
