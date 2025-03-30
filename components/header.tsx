@@ -24,7 +24,7 @@ export function Header() {
           className={cn(
             "flex items-center justify-center rounded-full px-4 py-2 text-gray-300 transition-colors border",
             isActive("/")
-              ? "bg-neutral-800 text-white border-neutral-50/20"
+              ? "bg-neutral-900/50 text-white border-neutral-50/20"
               : "hover:bg-neutral-800/50 hover:text-white border-transparent hover:border-neutral-50/20",
           )}
         >
@@ -38,7 +38,7 @@ export function Header() {
           className={cn(
             "flex items-center gap-1.5 rounded-full px-4 py-2 text-gray-300 transition-colors border",
             isActive("/about")
-              ? "bg-neutral-800 text-white border-neutral-50/20"
+              ? "bg-neutral-900/50 text-white border-neutral-50/20"
               : "hover:bg-neutral-800/50 hover:text-white border-transparent hover:border-neutral-50/20",
           )}
         >
@@ -51,7 +51,7 @@ export function Header() {
           className={cn(
             "flex items-center gap-1.5 rounded-full px-4 py-2 text-gray-300 transition-colors border",
             isActive("/work")
-              ? "bg-neutral-800 text-white border-neutral-50/20"
+              ? "bg-neutral-900/50 text-white border-neutral-50/20"
               : "hover:bg-neutral-800/50 hover:text-white border-transparent hover:border-neutral-50/20",
           )}
         >
