@@ -11,6 +11,19 @@ export async function middleware(request: NextRequest) {
   // No proteger la página de login
   const isLoginPage = pathname === "/admin/login"
 
+  // Si es la página de login, verificar si el usuario ya está autenticado
+  if (isAdminRoute && isLoginPage) {
+    const token = await getToken({
+      req: request,
+      secret: process.env.NEXTAUTH_SECRET,
+    })
+
+    // Si hay token, redirigir al dashboard
+    if (token) {
+      return NextResponse.redirect(new URL("/admin", request.url))
+    }
+  }
+
   if (isAdminRoute && !isLoginPage) {
     const token = await getToken({
       req: request,
