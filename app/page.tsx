@@ -2,10 +2,16 @@ import Footer from "@/components/footer";
 import { Hero } from "@/components/hero";
 import { ProjectCard } from "@/components/project-card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronRight } from "lucide-react";
+import { Metadata } from "next";
 import Link from "next/link";
 import { FaAws } from "react-icons/fa";
 import { SiDocker, SiFigma, SiGit, SiJavascript, SiLinux, SiNextdotjs, SiNodedotjs, SiPython, SiReact, SiTailwindcss, SiTypescript } from "react-icons/si";
+
+export const metadata = {
+  title: "Home | Franco's Portfolio",
+  description: "Showcasing Franco's skills, expertise, and featured projects.",
+};
 
 export default function Home() {
   const skills = {
@@ -39,7 +45,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
             <div>
               <h2 className="text-3xl font-bold mb-6">About Me</h2>
-              <div className="space-y-4 text-gray-400">
+              <div className="space-y-4 text-neutral-400">
                 <p>
                   I'm a passionate software developer and systems engineer with a keen eye for design. My work focuses
                   on creating elegant, efficient solutions that solve real-world problems.
@@ -54,12 +60,10 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="mt-8">
-                <Link href="/about">
-                  <Button variant="outline" className="group border-neutral-700 text-white hover:bg-neutral-800">
-                    View full profile
-                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </Button>
+              <div className="mt-8 p-0">
+                <Link href="/about" className="flex items-center text-neutral-200 hover:text-white group transition-colors">
+                  View full profile
+                  <ChevronRight className="ml-2 h-4 w-4" />
                 </Link>
               </div>
             </div>

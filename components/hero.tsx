@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, ChevronRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
@@ -35,7 +35,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-lg md:text-xl mb-2 text-gray-400"
+          className="text-lg md:text-xl mb-2 text-neutral-400"
         >
           Hello, I am
         </motion.p>
@@ -55,10 +55,10 @@ export function Hero() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="relative mb-10"
         >
-          <p className="text-lg md:text-xl text-gray-400 mx-auto max-w-2xl">
+          <p className="text-lg md:text-xl text-neutral-400 mx-auto max-w-2xl">
             Software Developer & Systems Engineer & Designer
           </p>
-          <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-12 h-[1px] bg-gradient-to-r from-transparent via-gray-500 to-transparent"></div>
+          <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-12 h-[1px] bg-gradient-to-r from-transparent via-neutral-500 to-transparent"></div>
         </motion.div>
 
         <motion.div
@@ -68,7 +68,7 @@ export function Hero() {
           className="flex justify-center w-full"
         >
           <Link href="/about">
-            <Button className="group flex items-center gap-2 bg-neutral-900/50 hover:bg-neutral-800 text-white border border-neutral-700 rounded-full mx-auto">
+            <Button className="group flex items-center gap-2 bg-neutral-900 hover:bg-neutral-800 text-white border border-neutral-700 rounded-full mx-auto">
               <div className="relative w-7 h-7 rounded-full overflow-hidden">
                 <Image
                   src="https://avatars.githubusercontent.com/u/124936792?v=4"
@@ -78,7 +78,7 @@ export function Hero() {
                 />
               </div>
               <span className="font-medium text-sm">About me</span>
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Button>
           </Link>
         </motion.div>
@@ -92,7 +92,7 @@ export function Hero() {
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer"
         onClick={scrollToNextSection}
       >
-        <div className="w-5 h-8 border border-gray-500 rounded-full flex justify-center">
+        <div className="w-5 h-8 border border-neutral-500 rounded-full flex justify-center">
           <motion.div
             className="w-1 h-1.5 bg-white rounded-full mt-1.5"
             animate={{

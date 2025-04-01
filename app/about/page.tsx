@@ -23,6 +23,11 @@ import {
   SiSass,
 } from "react-icons/si"
 import { FaAws } from 'react-icons/fa'
+import { Metadata } from "next"
+
+/* export const metadata = {
+  title: "About Me",
+}; */
 
 export default function AboutPage() {
   // Datos de perfil (en un proyecto real, estos datos podrían venir de una API o CMS)

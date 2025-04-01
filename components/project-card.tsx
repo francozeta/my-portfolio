@@ -16,8 +16,8 @@ export function ProjectCard({ title, description, tags, imageUrl, slug }: Projec
   const projectTags = getTagsByIds(tags)
 
   return (
-    <Link href={`/work/${slug}`}>
-      <Card className="group overflow-hidden border-neutral-800 bg-neutral-900/50 hover:bg-neutral-800 transition-colors">
+    <Link href={`/work/${slug}`}  >
+      <Card className="group overflow-hidden border-neutral-800 bg-neutral-950 hover:bg-neutral-900 transition-colors">
         <div className="relative h-48 w-full overflow-hidden">
           <Image
             src={imageUrl || "/placeholder.svg"}
@@ -28,13 +28,13 @@ export function ProjectCard({ title, description, tags, imageUrl, slug }: Projec
         </div>
         <CardContent className="p-6">
           <div className="flex justify-between items-start mb-2">
-            <h3 className="text-lg font-medium">{title}</h3>
+            <h3 className="text-lg font-medium text-neutral-100">{title}</h3>
             <div className="p-1 rounded-full bg-neutral-800 opacity-0 group-hover:opacity-100 transition-opacity">
               <ArrowUpRight className="h-4 w-4" />
             </div>
           </div>
-          <p className="text-sm text-gray-400 mb-4">{description}</p>
-          <div className="flex flex-wrap gap-2">
+          <p className="text-sm text-neutral-400 mb-4">{description}</p>
+          <div className="flex flex-wrap gap-2 text-neutral-400">
             {projectTags.map((tag) => (
               <span
                 key={tag?.id}

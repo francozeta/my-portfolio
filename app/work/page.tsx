@@ -7,12 +7,15 @@ async function getProjects() {
   const projects = await Project.find({ published: true }).sort({ createdAt: -1 })
   return JSON.parse(JSON.stringify(projects))
 }
+export const metadata = {
+  title: "My Projects",
+};
 
 export default async function WorkPage() {
   const projects = await getProjects()
 
   return (
-    <div className="min-h-screen pt-24 pb-16 px-4">
+    <div className="min-h-screen pt-24 pb-16 px-4 ">
       {/* Gradient background - estático y centrado */}
       <div
         className="absolute inset-0 opacity-20 pointer-events-none"
@@ -30,7 +33,7 @@ export default async function WorkPage() {
       <div className="container mx-auto max-w-5xl relative z-10">
         <h1 className="text-4xl font-bold mb-8">Mis Proyectos</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
           {projects.map((project: any) => (
             <ProjectCard
               key={project._id}

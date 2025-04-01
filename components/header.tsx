@@ -18,11 +18,11 @@ export function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex justify-center p-4">
-      <nav className="flex items-center rounded-full bg-transparent border border-neutral-700 gap-0.5 p-1 backdrop-blur-sm">
+      <nav className="flex items-center rounded-full bg-neutral-950/40 border border-neutral-700 gap-0.5 p-1 backdrop-blur-sm">
         <Link
           href="/"
           className={cn(
-            "flex items-center justify-center rounded-full px-4 py-2 text-gray-300 transition-colors border",
+            "flex items-center justify-center rounded-full px-4 py-2 text-neutral-300 transition-colors border",
             isActive("/")
               ? "bg-neutral-900/50 text-white border-neutral-50/20"
               : "hover:bg-neutral-800/50 hover:text-white border-transparent hover:border-neutral-50/20",
@@ -36,7 +36,7 @@ export function Header() {
         <Link
           href="/about"
           className={cn(
-            "flex items-center gap-1.5 rounded-full px-4 py-2 text-gray-300 transition-colors border",
+            "flex items-center gap-1.5 rounded-full px-4 py-2 text-neutral-300 transition-colors border",
             isActive("/about")
               ? "bg-neutral-900/50 text-white border-neutral-50/20"
               : "hover:bg-neutral-800/50 hover:text-white border-transparent hover:border-neutral-50/20",
@@ -49,7 +49,7 @@ export function Header() {
         <Link
           href="/work"
           className={cn(
-            "flex items-center gap-1.5 rounded-full px-4 py-2 text-gray-300 transition-colors border",
+            "flex items-center gap-1.5 rounded-full px-4 py-2 text-neutral-300 transition-colors border",
             isActive("/work")
               ? "bg-neutral-900/50 text-white border-neutral-50/20"
               : "hover:bg-neutral-800/50 hover:text-white border-transparent hover:border-neutral-50/20",
