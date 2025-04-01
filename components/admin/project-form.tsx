@@ -10,8 +10,10 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
-import { Upload, X, Loader2 } from "lucide-react"
+import { Upload, X, Loader2, Check, ChevronDown } from "lucide-react"
 import { uploadImage } from "@/lib/supabase/storage/client"
+import { TECH_TAGS } from "@/lib/constants"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 interface ProjectFormProps {
   project?: {
@@ -33,7 +35,7 @@ export default function ProjectForm({ project }: ProjectFormProps) {
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(project?.imageUrl || null)
   const [tags, setTags] = useState<string[]>(project?.tags || [])
-  const [currentTag, setCurrentTag] = useState("")
+  const [dropdownOpen, setDropdownOpen] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,15 +50,12 @@ export default function ProjectForm({ project }: ProjectFormProps) {
     reader.readAsDataURL(file)
   }
 
-  const handleAddTag = () => {
-    if (currentTag.trim() && !tags.includes(currentTag.trim())) {
-      setTags([...tags, currentTag.trim()])
-      setCurrentTag("")
+  const handleTagToggle = (tagId: string) => {
+    if (tags.includes(tagId)) {
+      setTags(tags.filter((id) => id !== tagId))
+    } else {
+      setTags([...tags, tagId])
     }
-  }
-
-  const handleRemoveTag = (tagToRemove: string) => {
-    setTags(tags.filter((tag) => tag !== tagToRemove))
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -211,43 +210,58 @@ export default function ProjectForm({ project }: ProjectFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label>Tags</Label>
-            <div className="flex gap-2">
-              <Input
-                value={currentTag}
-                onChange={(e) => setCurrentTag(e.target.value)}
-                className="border-neutral-700 bg-neutral-900"
-                placeholder="Añadir tag"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault()
-                    handleAddTag()
-                  }
-                }}
-              />
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleAddTag}
-                className="border-neutral-700 bg-neutral-900"
-              >
-                Añadir
-              </Button>
-            </div>
+            <Label>Tecnologías</Label>
+            <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="w-full justify-between border-neutral-700 bg-neutral-900 hover:bg-neutral-800"
+                >
+                  <span>Seleccionar tecnologías</span>
+                  <ChevronDown className="h-4 w-4 opacity-50" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="max-h-[300px] w-[300px] overflow-auto border-neutral-700 bg-neutral-900">
+                {TECH_TAGS.map((tag) => {
+                  const isSelected = tags.includes(tag.id)
+                  return (
+                    <DropdownMenuItem
+                      key={tag.id}
+                      className={`flex cursor-pointer items-center justify-between px-4 py-2 hover:bg-neutral-800 ${
+                        isSelected ? "bg-neutral-800" : ""
+                      }`}
+                      onClick={() => handleTagToggle(tag.id)}
+                    >
+                      <div className="flex items-center gap-2">
+                        <tag.icon className="h-5 w-5" />
+                        <span>{tag.name}</span>
+                      </div>
+                      {isSelected && <Check className="h-4 w-4" />}
+                    </DropdownMenuItem>
+                  )
+                })}
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             <div className="flex flex-wrap gap-2 pt-2">
-              {tags.map((tag) => (
-                <div key={tag} className="flex items-center gap-1 rounded-full bg-neutral-800 px-3 py-1 text-sm">
-                  {tag}
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveTag(tag)}
-                    className="ml-1 rounded-full p-1 hover:bg-neutral-700"
-                  >
-                    <X className="h-3 w-3" />
-                  </button>
-                </div>
-              ))}
+              {tags.map((tagId) => {
+                const tag = TECH_TAGS.find((t) => t.id === tagId)
+                if (!tag) return null
+
+                return (
+                  <div key={tagId} className="flex items-center gap-1 rounded-full bg-neutral-800 px-3 py-1 text-sm">
+                    <tag.icon className="h-4 w-4 mr-1" />
+                    {tag.name}
+                    <button
+                      type="button"
+                      onClick={() => handleTagToggle(tagId)}
+                      className="ml-1 rounded-full p-1 hover:bg-neutral-700"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </div>
+                )
+              })}
             </div>
           </div>
 
@@ -269,16 +283,8 @@ export default function ProjectForm({ project }: ProjectFormProps) {
         </div>
       </div>
 
-      <div className="flex justify-end gap-3 pt-4">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => router.push("/admin")}
-          className="border-neutral-700 bg-neutral-900"
-        >
-          Cancelar
-        </Button>
-        <Button type="submit" disabled={isLoading} className="bg-neutral-800 hover:bg-neutral-700">
+      <div className="flex justify-end">
+        <Button type="submit" className="bg-neutral-800 hover:bg-neutral-700" disabled={isLoading}>
           {isLoading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />

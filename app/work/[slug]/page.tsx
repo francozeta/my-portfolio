@@ -5,6 +5,7 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { getTagsByIds } from "@/lib/constants"
 
 interface ProjectPageProps {
   params: {
@@ -41,6 +42,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     notFound()
   }
 
+  const projectTags = getTagsByIds(project.tags)
+
   return (
     <div className="min-h-screen pt-24 pb-16 px-4">
       {/* Gradient background - estático y centrado */}
@@ -59,23 +62,29 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
       <div className="container mx-auto max-w-4xl relative z-10">
         <Link href="/work">
-          <Button variant="ghost" className="mb-6 -ml-2 text-neutral-400 hover:text-white">
+          <Button variant="ghost" className="mb-6 pl-0 hover:bg-transparent hover:text-white">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Volver a proyectos
           </Button>
         </Link>
 
-        <h1 className="text-4xl font-bold mb-4">{project.title}</h1>
-
-        <div className="flex flex-wrap gap-2 mb-8">
-          {project.tags.map((tag: string) => (
-            <span key={tag} className="px-3 py-1 bg-neutral-900 border border-neutral-700 rounded-full text-sm">
-              {tag}
-            </span>
-          ))}
+        <div className="mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold mb-4">{project.title}</h1>
+          <div className="flex flex-wrap gap-2 mb-6">
+            {projectTags.map((tag) => (
+              <span
+                key={tag.id}
+                className="flex items-center gap-1 px-3 py-1 bg-neutral-900 border border-neutral-700 rounded-full text-sm"
+              >
+                <tag.icon className="h-4 w-4" />
+                {tag.name}
+              </span>
+            ))}
+          </div>
+          <p className="text-lg text-gray-300">{project.description}</p>
         </div>
 
-        <div className="relative aspect-video w-full mb-8 rounded-lg overflow-hidden">
+        <div className="relative aspect-video w-full mb-8 overflow-hidden rounded-lg">
           <Image
             src={project.imageUrl || "/placeholder.svg"}
             alt={project.title}
@@ -86,9 +95,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </div>
 
         <div className="prose prose-invert max-w-none">
-          <p className="text-xl text-neutral-300 mb-6">{project.description}</p>
-
-          <div className="whitespace-pre-line text-neutral-400">{project.content}</div>
+          {project.content.split("\n").map((paragraph, index) => (
+            <p key={index}>{paragraph}</p>
+          ))}
         </div>
       </div>
     </div>

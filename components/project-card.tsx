@@ -2,6 +2,7 @@ import Image from "next/image"
 import { ArrowUpRight } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
+import { getTagsByIds } from "@/lib/constants"
 
 interface ProjectCardProps {
   title: string
@@ -12,6 +13,8 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ title, description, tags, imageUrl, slug }: ProjectCardProps) {
+  const projectTags = getTagsByIds(tags)
+
   return (
     <Link href={`/work/${slug}`}>
       <Card className="group overflow-hidden border-neutral-800 bg-neutral-900/50 hover:bg-neutral-800 transition-colors">
@@ -32,9 +35,13 @@ export function ProjectCard({ title, description, tags, imageUrl, slug }: Projec
           </div>
           <p className="text-sm text-gray-400 mb-4">{description}</p>
           <div className="flex flex-wrap gap-2">
-            {tags.map((tag) => (
-              <span key={tag} className="px-2 py-1 bg-neutral-900 border border-neutral-700 rounded-full text-xs">
-                {tag}
+            {projectTags.map((tag) => (
+              <span
+                key={tag?.id}
+                className="flex items-center gap-1 px-2 py-1 bg-neutral-900 border border-neutral-700 rounded-full text-xs"
+              >
+                <tag.icon className="h-3 w-3" />
+                {tag?.name}
               </span>
             ))}
           </div>
