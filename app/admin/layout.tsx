@@ -12,13 +12,9 @@ export default async function AdminLayout({
   try {
     const session = await getServerSession(authOptions)
 
-    if (!session) {
-      return redirect("/admin/login")
-    }
-
     return (
       <div className="min-h-screen bg-black text-white">
-        <TopNavbar user={session.user} />
+        <TopNavbar user={session?.user} />
         <main className="container mx-auto p-6">{children}</main>
       </div>
     )
