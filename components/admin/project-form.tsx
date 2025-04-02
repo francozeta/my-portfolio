@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
@@ -10,10 +10,11 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
-import { Upload, X, Loader2, Check, ChevronDown } from "lucide-react"
+import { Upload, X, Loader2, Check, ChevronDown, Github, ExternalLink } from "lucide-react"
 import { uploadImage } from "@/lib/supabase/storage/client"
 import { TECH_TAGS } from "@/lib/constants"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 interface ProjectFormProps {
   project?: {
@@ -24,6 +25,8 @@ interface ProjectFormProps {
     content: string
     imageUrl: string
     tags: string[]
+    urlRepo?: string
+    urlDemo?: string
     featured: boolean
     published: boolean
   }
@@ -36,6 +39,8 @@ export default function ProjectForm({ project }: ProjectFormProps) {
   const [imagePreview, setImagePreview] = useState<string | null>(project?.imageUrl || null)
   const [tags, setTags] = useState<string[]>(project?.tags || [])
   const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [content, setContent] = useState(project?.content || "")
+  const [previewContent, setPreviewContent] = useState("")
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,8 +73,10 @@ export default function ProjectForm({ project }: ProjectFormProps) {
         title: formData.get("title"),
         slug: formData.get("slug"),
         description: formData.get("description"),
-        content: formData.get("content"),
+        content: content,
         tags,
+        urlRepo: formData.get("urlRepo"),
+        urlDemo: formData.get("urlDemo"),
         featured: formData.get("featured") === "on",
         published: formData.get("published") === "on",
       }
@@ -119,6 +126,15 @@ export default function ProjectForm({ project }: ProjectFormProps) {
     }
   }
 
+  // Generar vista previa del markdown
+  useEffect(() => {
+    const previewTimer = setTimeout(() => {
+      setPreviewContent(content)
+    }, 500)
+
+    return () => clearTimeout(previewTimer)
+  }, [content])
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid gap-6 md:grid-cols-2">
@@ -158,15 +174,31 @@ export default function ProjectForm({ project }: ProjectFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="content">Contenido detallado</Label>
-            <Textarea
-              id="content"
-              name="content"
-              defaultValue={project?.content || ""}
-              required
-              className="border-neutral-700 bg-neutral-900"
-              rows={8}
-            />
+            <Label htmlFor="urlRepo">URL del Repositorio</Label>
+            <div className="flex items-center space-x-2">
+              <Github className="h-5 w-5 text-neutral-400" />
+              <Input
+                id="urlRepo"
+                name="urlRepo"
+                defaultValue={project?.urlRepo || ""}
+                placeholder="https://github.com/username/repo"
+                className="border-neutral-700 bg-neutral-900"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="urlDemo">URL de Demo</Label>
+            <div className="flex items-center space-x-2">
+              <ExternalLink className="h-5 w-5 text-neutral-400" />
+              <Input
+                id="urlDemo"
+                name="urlDemo"
+                defaultValue={project?.urlDemo || ""}
+                placeholder="https://demo-site.com"
+                className="border-neutral-700 bg-neutral-900"
+              />
+            </div>
           </div>
         </div>
 
@@ -280,6 +312,57 @@ export default function ProjectForm({ project }: ProjectFormProps) {
               <Switch id="published" name="published" defaultChecked={project?.published || false} />
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label>Contenido detallado (Markdown)</Label>
+        <div className="rounded-lg border border-neutral-700 overflow-hidden">
+          <Tabs defaultValue="edit" className="w-full">
+            <TabsList className="bg-neutral-900 border-b border-neutral-700 w-full justify-start rounded-none">
+              <TabsTrigger value="edit" className="data-[state=active]:bg-neutral-800">
+                Editar
+              </TabsTrigger>
+              <TabsTrigger value="preview" className="data-[state=active]:bg-neutral-800">
+                Vista previa
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="edit" className="p-0 m-0">
+              <Textarea
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                className="border-0 rounded-none min-h-[400px] bg-neutral-900 focus-visible:ring-0 focus-visible:ring-offset-0"
+                placeholder="# Título
+                
+## Subtítulo
+
+Este es un proyecto que...
+
+### Características
+
+- Característica 1
+- Característica 2
+
+### Instalación
+
+```bash
+npm install
+npm run dev
+```"
+              />
+            </TabsContent>
+            <TabsContent value="preview" className="p-4 m-0 min-h-[400px] bg-neutral-900 border-t border-neutral-700">
+              {previewContent ? (
+                <div className="prose prose-invert max-w-none">
+                  {previewContent
+                    .split("\n")
+                    .map((paragraph, index) => (paragraph ? <p key={index}>{paragraph}</p> : <br key={index} />))}
+                </div>
+              ) : (
+                <div className="text-neutral-500 italic">La vista previa aparecerá aquí...</div>
+              )}
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
 
