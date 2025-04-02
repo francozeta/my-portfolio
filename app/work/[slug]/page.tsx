@@ -6,6 +6,8 @@ import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { getTagsByIds } from "@/lib/constants"
+import { serializeMarkdown } from "@/lib/markdown"
+import { MarkdownContent, ProjectLinks } from "@/components/markdown-content"
 
 interface ProjectPageProps {
   params: {
@@ -42,7 +44,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     notFound()
   }
 
-  const projectTags = getTagsByIds(project.tags)
+  const projectTags = getTagsByIds(project.tags || [])
+  const mdxSource = await serializeMarkdown(project.content)
 
   return (
     <div className="min-h-screen pt-24 pb-16 px-4">
@@ -82,6 +85,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             ))}
           </div>
           <p className="text-lg text-gray-300">{project.description}</p>
+
+          <ProjectLinks repoUrl={project.urlRepo} demoUrl={project.urlDemo} />
         </div>
 
         <div className="relative aspect-video w-full mb-8 overflow-hidden rounded-lg">
@@ -94,10 +99,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           />
         </div>
 
-        <div className="prose prose-invert max-w-none">
-          {project.content.split("\n").map((paragraph, index) => (
-            <p key={index}>{paragraph}</p>
-          ))}
+        <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-6 md:p-8">
+          <MarkdownContent source={mdxSource} />
         </div>
       </div>
     </div>

@@ -2,18 +2,30 @@ import Footer from "@/components/footer";
 import { Hero } from "@/components/hero";
 import { ProjectCard } from "@/components/project-card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronRight } from 'lucide-react';
 import { Metadata } from "next";
 import Link from "next/link";
 import { FaAws } from "react-icons/fa";
 import { SiDocker, SiFigma, SiGit, SiJavascript, SiLinux, SiNextdotjs, SiNodedotjs, SiPython, SiReact, SiTailwindcss, SiTypescript } from "react-icons/si";
+import { connectToDatabase } from "@/lib/mongoose";
+import Project from "@/models/Project";
 
 export const metadata = {
   title: "Home | Franco's Portfolio",
   description: "Showcasing Franco's skills, expertise, and featured projects.",
 };
 
-export default function Home() {
+// Function to fetch featured projects
+async function getFeaturedProjects() {
+  await connectToDatabase();
+  const projects = await Project.find({ featured: true, published: true }).limit(3);
+  return JSON.parse(JSON.stringify(projects));
+}
+
+export default async function Home() {
+  // Fetch featured projects
+  const featuredProjects = await getFeaturedProjects();
+
   const skills = {
     languages: [
       { name: "JavaScript", icon: SiJavascript },
@@ -125,35 +137,38 @@ export default function Home() {
         <div className="container mx-auto max-w-5xl">
           <div className="flex flex-col md:flex-row justify-between items-baseline mb-12">
             <h2 className="text-3xl font-bold">Featured Work</h2>
-            <Button variant="link" className="text-gray-400 hover:text-white group">
-              View all projects
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Button>
+            <Link href="/work">
+              <Button variant="link" className="text-gray-400 hover:text-white group">
+                View all projects
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <ProjectCard
-              title="E-commerce Platform"
-              description="A modern e-commerce solution with real-time inventory and payment processing"
-              tags={["Next.js", "Stripe", "MongoDB"]}
-              imageUrl="/placeholder.svg?height=200&width=400"
-            />
-            <ProjectCard
-              title="Analytics Dashboard"
-              description="Interactive dashboard for visualizing complex data sets with customizable views"
-              tags={["React", "D3.js", "Firebase"]}
-              imageUrl="/placeholder.svg?height=200&width=400"
-            />
-            <ProjectCard
-              title="Mobile App"
-              description="Cross-platform mobile application for task management with offline capabilities"
-              tags={["React Native", "Redux", "GraphQL"]}
-              imageUrl="/placeholder.svg?height=200&width=400"
-            />
-          </div>
+          {featuredProjects.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredProjects.map((project) => (
+                <ProjectCard
+                  key={project._id}
+                  title={project.title}
+                  description={project.description}
+                  tags={project.tags}
+                  imageUrl={project.imageUrl}
+                  slug={project.slug}
+                  urlRepo={project.urlRepo}
+                  urlDemo={project.urlDemo}
+                  featured={project.featured}
+                  completed={project.completed}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 text-neutral-400">
+              <p>No featured projects available yet. Check back soon!</p>
+            </div>
+          )}
         </div>
       </section>
-
     </div>
   );
 }
