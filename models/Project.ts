@@ -24,6 +24,14 @@ const projectSchema = new Schema(
       required: true,
     },
     tags: [String],
+    urlRepo: {
+      type: String,
+      default: "",
+    },
+    urlDemo: {
+      type: String,
+      default: "",
+    },
     featured: {
       type: Boolean,
       default: false,
@@ -39,4 +47,3 @@ const projectSchema = new Schema(
 // Prevenir redefinición del modelo durante hot reloading
 const Project = models.Project || mongoose.model("Project", projectSchema)
 export default Project
-
